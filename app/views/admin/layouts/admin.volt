@@ -317,6 +317,7 @@
 			})
                         
                         function _addMessages(message , type){
+                            $('#alertMessages').html( "" );
                             htmlMessage =  ' <div id="successMessages" class="hide alert '+type+'"> '+
                                     ' <button type="button" class="close" data-dismiss="alert"> '+
                                     '        <i class="ace-icon fa fa-times"></i> '+
@@ -327,7 +328,7 @@
 
 
                             $('#alertMessages').append( htmlMessage );
-                            $('#alertMessages div:last-child').removeClass("hide").fadeOut( 0 ).fadeIn( 400 ).delay( 2000 ).slideUp( 1000 );
+                            $('#alertMessages div:last-child').removeClass("hide").fadeOut( 0 ).fadeIn( 400 );//.delay( 2000 ).slideUp( 1000 );
                         }
                         
                         function showSuccessMessages(message){

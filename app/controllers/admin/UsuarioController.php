@@ -14,7 +14,7 @@ class UsuarioController extends ControllerBase
 
 // How many robots are there?
         $usuarioList = Usuario::find();
-        var_dump(count($usuarioList));
+        
         
         
 //        return false;
@@ -39,7 +39,7 @@ class UsuarioController extends ControllerBase
     public function salvarAction()
     {
 
-        $categoria = new Categoria();
+        $usuario = new Usuario();
         
         // crear el objeto caetegoria
         
@@ -47,25 +47,19 @@ class UsuarioController extends ControllerBase
          // Check if request has made with POST
         if ($this->request->isPost()) {
             // Access POST data
-//            $categoria->setId(3);
-            $categoria->setCategoria($this->request->getPost("categoria"));
-            $categoria->setPathImagen($this->request->getPost("imagen"));
-            $categoria->setEsFinal(false);
-            $categoria->setNivel(0);
-            
-            $categoria->setEsRecomendableDespuesCompra(false);
-            $categoria->setIdStatus(1);
-//            $categoria->setIdCategoriaPadre(NULL);
-
+//            $usuario->setId(3);
+            $usuario->setIdRol($this->request->getPost("idRol", "int"));
+            $usuario->setNombreUsuario($this->request->getPost("nombreUsuario","string"));
+            $usuario->setPassword($this->request->getPost("password","string"));
             
             // INFO DE BITACORA
             
-            $categoria->setCreacionFecha(now());
-            $categoria->setCreacionIdUsuario(1);
+            $usuario->setCreacionFecha(date("Y-m-d H:i:s", time()));
+//            $usuario->setCreacionIdUsuario(1);
 
-            if ($categoria->save() === false) {
+            if ($usuario->save() === false) {
 
-                $messages = $categoria->getMessages();
+                $messages = $usuario->getMessages();
                 
                 foreach ($messages as $message) {
                     $this->flash->error( $message->getMessage() );
@@ -75,7 +69,7 @@ class UsuarioController extends ControllerBase
                 return array('success' => false , "otras cosas"  => 2 );
 
             } else {
-                $this->flash->success("Se ha guardado exitosamente esta categoría");
+                $this->flash->success("Se ha guardado exitosamente este usuario");
                 $this->setJsonResponse();
                 return array('success' => true );
                 
@@ -87,6 +81,76 @@ class UsuarioController extends ControllerBase
         
         return false;        
     }
+ 
     
+    public function editAction()
+    {
+
+        $idUsuario = $this->request->getPost("idUsuario", "int");
+        
+        if($idUsuario == NULL){
+            $this->response->redirect('http://localhost/compropolis/admin/usuario');
+            return;
+        }
+        $usuario = Usuario::findFirst($idUsuario);
+        $rolList = Rol::find(array("order" => "ID_ROL"));
+        
+        $this->view->rolList = $rolList;        
+        $this->view->usuario = $usuario;
+
+//        return $this->view->setMainView(("admin/usuario/nueva"));
+//        $this->view->pick("admin/usuario/nueva");
+    }
+ 
+    
+
+    public function updateAction()
+    {
+
+        $idUsuario = $this->request->getPost("idUsuario", "int");
+
+        $usuario = Usuario::findFirst($idUsuario);
+        
+        // crear el objeto caetegoria
+        
+        // asiganr valroes
+         // Check if request has made with POST
+        if ($this->request->isPost()) {
+            // Access POST data
+//            $usuario->setId(3);
+            $usuario->setIdRol($this->request->getPost("idRol", "int"));
+            $usuario->setNombreUsuario($this->request->getPost("nombreUsuario","string"));
+            $usuario->setPassword($this->request->getPost("password","string"));
+            
+            // INFO DE BITACORA
+            
+            $usuario->setCreacionFecha(date("Y-m-d H:i:s", time()));
+//            $usuario->setCreacionIdUsuario(1);
+
+            if ($usuario->save() === false) {
+
+                $messages = $usuario->getMessages();
+                
+                foreach ($messages as $message) {
+                    $this->flash->error( $message->getMessage() );
+                }
+                
+                $this->setJsonResponse();
+                return array('success' => false , "otras cosas"  => 2 );
+
+            } else {
+                $this->flash->success("Se ha guardado exitosamente este usuario");
+                $this->setJsonResponse();
+                return array('success' => true );
+                
+                
+            }
+        }
+        
+        
+        
+        return false;        
+    }
+     
 }
 

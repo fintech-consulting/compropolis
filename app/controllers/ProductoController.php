@@ -1,7 +1,7 @@
 <?php
 namespace Compropolis\Controllers;
 
-class IndexController extends ControllerBase
+class ProductoController extends ControllerBase
 {
 
     public function indexAction()
@@ -12,8 +12,17 @@ class IndexController extends ControllerBase
         
         
     }
+    
+    public function detalleAction()
+    {
+        echo '[' . __METHOD__ . ']';
+//        return false;
+        
+        
+        
+    }
+    
 
     
     
 }
-

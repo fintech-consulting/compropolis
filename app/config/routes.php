@@ -43,6 +43,13 @@ $router->add('/admin/:controller/', [
     'namespace'  => 'Compropolis\Controllers\Admin',
     'controller' => 1
 ]);
+$router->add('/producto/:params', [
+    'namespace'  => 'Compropolis\Controllers',
+    'controller' => 'producto',
+    'action'     => 'detalle',
+    'params'     => 1,
+]);
+
 
 
 return $router;

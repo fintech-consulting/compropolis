@@ -21,13 +21,13 @@
 
 <button id="guardarBtn" class="btn btn-sm btn-success">
     <i class="ace-icon fa fa-floppy-o align-top bigger-125"></i>    
-    Guardar
+    Modificar
 </button>
 
 {% endblock %}
 
 
-{% block title %} Registro de Nuevo usuario {% endblock %}
+{% block title %} Modificación de Usuario {% endblock %}
 
 
 
@@ -35,7 +35,7 @@
 
 <div class="widget-box">
     <div class="widget-header">
-        <h4 class="widget-title">Registro de Nuevo Usuario</h4>
+        <h4 class="widget-title">Modificación de Usuario</h4>
     </div>
 
     <div class="widget-body">
@@ -43,12 +43,17 @@
 
                 <!-- <legend>Form</legend> -->
             <form id="form" action="/compropolis/admin/categoria/salvar" method="POST" class="form-horizontal" role="form">
+                {{ hiddenField("idUsuario") }}
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="nombreUsuario"> Nombre de Usuario: </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Captura el nombre del usuario" class="form-control" />
+                        
+                        <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Captura el nombre del usuario" class="form-control"
+                               value="{{ usuario is defined ? usuario.getNombreUsuario() : '' }}"
+                               
+                               />
                     </div>
                 </div>                                                                                                                
 
@@ -60,7 +65,7 @@
                         <select class="form-control" id="idRol" name="idRol">
                                 <option value="">Selecciona una opción</option>
                                 {% for rol in rolList %}
-                                <option value="{{ rol.getIdRol() }}">{{ rol.getRol() }}</option>
+                                <option value="{{ rol.getIdRol() }}" {{ (usuario is defined and usuario.getIdRol() == rol.getIdRol()) ? 'selected="true"' : '' }}>{{ rol.getRol() }}</option>
                                 {% endfor %}   
                         </select>
                     </div>
@@ -151,7 +156,7 @@
 
         $.ajax({
                 type: "POST",
-                url: '{{ url("admin/usuario/salvar") }}',
+                url: '{{ url("admin/usuario/update") }}',
                 data: $('#form').serialize(),
                 success: function (data) {
                     
